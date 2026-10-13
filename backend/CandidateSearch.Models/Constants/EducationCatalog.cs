@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,6 @@ namespace CandidateSearch.Models.Constants
 
         private static readonly Dictionary<string, string> Lookup = All.ToDictionary(Key);
 
-        /// <summary>"btech", "B.Tech", "b.tech" all map to "B.Tech". Unknown input returns null.</summary>
         public static string? Normalize(string input) => Lookup.GetValueOrDefault(Key(input));
 
         private static string Key(string value) =>

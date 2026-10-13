@@ -1,7 +1,6 @@
 import axios from 'axios';
 import type { ProblemDetails } from '../types';
 
-/** Converts any thrown error into a readable message for the UI. */
 export function getErrorMessage(error: unknown): string {
     if (axios.isAxiosError<ProblemDetails>(error)) {
         if (!error.response) return 'Cannot reach the server. Check your connection and try again.';

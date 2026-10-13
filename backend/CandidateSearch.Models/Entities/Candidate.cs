@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,7 @@ namespace CandidateSearch.Models.Entities
         public string? Gender { get; set; }
         public string? Location { get; set; }
         public string? Education { get; set; }
-        public DateTime CreatedAt { get; set; }      // UTC
-        public DateTime? LastLoginAt { get; set; }   // null = never logged in
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
     }
 }

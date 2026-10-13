@@ -19,7 +19,6 @@ export default function LoginPage() {
         try {
             if (isRegister) {
                 await register(email, password);
-                // Automatically log in after registration
                 const { token } = await login(email, password);
                 tokenStorage.set(token);
                 navigate('/search', { replace: true });

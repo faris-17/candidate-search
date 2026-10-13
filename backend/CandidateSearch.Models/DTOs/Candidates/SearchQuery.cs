@@ -1,4 +1,4 @@
-﻿using CandidateSearch.Models.Constants;
+using CandidateSearch.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +19,6 @@ namespace CandidateSearch.Models.DTOs.Candidates
         [MaxLength(20)] public string? Gender { get; set; }
         [MaxLength(100)] public string? Location { get; set; }
 
-        /// <summary>Comma-separated, e.g. "B.Tech,M.Tech,MBA" or "BTech,MTech".</summary>
         [MaxLength(200)] public string? Education { get; set; }
 
         public DateOnly? CreatedFrom { get; set; }

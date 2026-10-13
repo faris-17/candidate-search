@@ -13,25 +13,24 @@ namespace CandidateSearch.Data.Seed
     {
         public static async Task SeedAsync(CandidateSearchDbContext db, CancellationToken ct = default)
         {
-            if (await db.Candidates.AnyAsync(ct)) return;          // idempotent: only seeds an empty table
+            if (await db.Candidates.AnyAsync(ct)) return;
 
             string[] firstNames = ["Anjali", "Rahul", "Priya", "Arun", "Meera", "Vishnu", "Sneha", "Kiran", "Divya", "Nikhil", "Fathima", "Joseph"];
             string[] lastNames = ["Nair", "Menon", "Kumar", "Thomas", "Pillai", "Varghese", "Iyer", "Joseph", "Das", "Sharma"];
             string[] locations = ["Kochi", "Trivandrum", "Kozhikode", "Bengaluru", "Chennai", "Hyderabad"];
             string[] genders = ["Male", "Female", "Other"];
 
-            var rnd = new Random(42);                              // fixed seed = same data every run
+            var rnd = new Random(42);
             var now = DateTime.UtcNow;
             var today = DateOnly.FromDateTime(now);
 
-            // BCrypt is deliberately slow, so hash once and reuse for all demo users.
             var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password@123");
 
             var candidates = Enumerable.Range(1, 150).Select(i =>
             {
                 var created = now.AddDays(-rnd.Next(1, 120)).AddMinutes(-rnd.Next(0, 1440));
                 DateTime? lastLogin = rnd.NextDouble() < 0.3
-                    ? null                                         // ~30% never logged in
+                    ? null
                     : created.AddMinutes(rnd.NextDouble() * (now - created).TotalMinutes);
 
                 return new Candidate

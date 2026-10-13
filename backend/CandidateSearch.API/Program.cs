@@ -4,7 +4,6 @@ using CandidateSearch.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ---------- Services (dependency injection container) ----------
 builder.Services
     .AddDatabase(builder.Configuration)
     .AddApplicationServices()
@@ -16,10 +15,9 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddOpenApi();
 
-// ---------- Middleware pipeline (order matters) ----------
 var app = builder.Build();
 
-app.UseExceptionHandler();                       // must be first, so it catches everything below
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -35,8 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors(ApiServiceExtensions.CorsPolicyName);
-app.UseAuthentication();                         // WHO are you?  (reads the token)
-app.UseAuthorization();                          // ARE YOU ALLOWED? ([Authorize])
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

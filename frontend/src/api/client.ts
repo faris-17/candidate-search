@@ -6,14 +6,12 @@ export const api = axios.create({
     timeout: 15000,
 });
 
-// Runs before EVERY request: attach the JWT.
 api.interceptors.request.use((config) => {
     const token = tokenStorage.get();
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
 
-// Runs on EVERY response: handle expired/invalid tokens in one place.
 api.interceptors.response.use(
     (response) => response,
     (error: unknown) => {

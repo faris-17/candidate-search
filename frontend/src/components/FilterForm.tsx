@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import CustomSelect, { type SelectOption } from './CustomSelect';
 import MultiSelectDropdown, { type MultiOption } from './MultiSelectDropdown';
-import { EDUCATION_OPTIONS, GENDER_OPTIONS, LOCATION_OPTIONS } from '../constants/constants';
+import { EDUCATION_OPTIONS, LOCATION_OPTIONS } from '../constants/constants';
 import type { SearchFilters } from '../types';
 
 interface Props {
@@ -20,7 +20,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
     const set = <K extends keyof SearchFilters>(key: K, v: SearchFilters[K]) =>
         onChange({ ...value, [key]: v });
 
-    // Date helpers for preset calculations
     const today = new Date().toISOString().split('T')[0];
     const daysAgo = (days: number) => {
         const d = new Date();
@@ -29,7 +28,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
     };
     const startOfYear = `${new Date().getFullYear()}-01-01`;
 
-    // 1. Location options
     const locationOptions: SelectOption[] = useMemo(() => [
         {
             value: '',
@@ -56,7 +54,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
         })),
     ], []);
 
-    // 2. Gender options with rich styling
     const genderOptions: SelectOption[] = useMemo(() => [
         {
             value: '',
@@ -94,7 +91,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
         },
     ], []);
 
-    // 3. Education options for MultiSelect
     const educationOptions: MultiOption[] = useMemo(() =>
         EDUCATION_OPTIONS.map((edu) => ({
             value: edu,
@@ -102,7 +98,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
             badge: <span className="edu-badge">{edu}</span>,
         })), []);
 
-    // 4. Age range preset options
     const currentAgeKey = useMemo(() => {
         if (!value.minAge && !value.maxAge) return 'all';
         if (value.minAge === '18' && value.maxAge === '25') return '18-25';
@@ -176,7 +171,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
         }
     };
 
-    // 5. Created Date Presets
     const currentCreatedKey = useMemo(() => {
         if (!value.createdFrom && !value.createdTo) return 'all';
         if (value.createdFrom === daysAgo(7) && value.createdTo === today) return 'last-7';
@@ -216,7 +210,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
         }
     };
 
-    // 6. Last Login Presets
     const currentLoginKey = useMemo(() => {
         if (!value.lastLoginFrom && !value.lastLoginTo) return 'all';
         if (value.lastLoginFrom === daysAgo(1) && value.lastLoginTo === today) return 'last-24h';
@@ -251,7 +244,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
         }
     };
 
-    // Count how many filters are active
     const activeFilterCount =
         (value.minAge ? 1 : 0) +
         (value.maxAge ? 1 : 0) +
@@ -285,7 +277,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
             </div>
 
             <div className="filter-grid">
-                {/* 1. Location Dropdown */}
                 <div className="field-group">
                     <label className="field-label" htmlFor="filter-location-select">
                         Location
@@ -300,7 +291,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
                     />
                 </div>
 
-                {/* 2. Gender Dropdown */}
                 <div className="field-group">
                     <label className="field-label" htmlFor="filter-gender-select">
                         Gender
@@ -315,7 +305,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
                     />
                 </div>
 
-                {/* 3. Education Multi-Select Dropdown */}
                 <div className="field-group">
                     <label className="field-label" htmlFor="filter-education-select">
                         Education Qualification
@@ -330,7 +319,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
                     />
                 </div>
 
-                {/* 4. Age Dropdown & Custom Range */}
                 <div className="field-group">
                     <div className="field-label-row">
                         <label className="field-label">Age Range</label>
@@ -380,7 +368,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
                     )}
                 </div>
 
-                {/* 5. Created Date Dropdown & Custom Range */}
                 <div className="field-group">
                     <div className="field-label-row">
                         <label className="field-label">Created Date</label>
@@ -423,7 +410,6 @@ export default function FilterForm({ value, onChange, onSearch, onReset, disable
                     )}
                 </div>
 
-                {/* 6. Last Login Dropdown & Custom Range */}
                 <div className="field-group">
                     <div className="field-label-row">
                         <label className="field-label">Last Login</label>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,6 @@ namespace CandidateSearch.Services.Helpers
 {
     public static class DateHelper
     {
-        /// <summary>Npgsql only accepts UTC DateTime for timestamptz columns.</summary>
         public static DateTime ToUtcStartOfDay(DateOnly date) =>
             DateTime.SpecifyKind(date.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
 
@@ -16,7 +15,7 @@ namespace CandidateSearch.Services.Helpers
         {
             if (dob is null) return null;
             var age = today.Year - dob.Value.Year;
-            if (dob.Value > today.AddYears(-age)) age--;     // birthday hasn't happened yet this year
+            if (dob.Value > today.AddYears(-age)) age--;
             return age;
         }
     }

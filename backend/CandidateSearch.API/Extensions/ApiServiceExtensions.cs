@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using CandidateSearch.Data;
 using CandidateSearch.Models.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,7 +19,6 @@ namespace CandidateSearch.API.Extensions
 
             services.AddDbContext<CandidateSearchDbContext>(options =>
                 options.UseNpgsql(connectionString, npgsql =>
-                    // Migrations live in the Data project, not in the API project.
                     npgsql.MigrationsAssembly(typeof(CandidateSearchDbContext).Assembly.GetName().Name)));
 
             return services;
@@ -29,7 +28,6 @@ namespace CandidateSearch.API.Extensions
         {
             var section = configuration.GetSection(JwtSettings.SectionName);
 
-            // Fail fast at startup if the Jwt section is invalid (e.g. key shorter than 32 chars).
             services.AddOptions<JwtSettings>()
                 .Bind(section)
                 .ValidateDataAnnotations()
@@ -42,7 +40,7 @@ namespace CandidateSearch.API.Extensions
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.MapInboundClaims = false;       // keep "sub" as "sub"
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -52,7 +50,7 @@ namespace CandidateSearch.API.Extensions
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero           // expire exactly at "exp" (default grace is 5 minutes)
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

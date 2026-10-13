@@ -15,7 +15,6 @@ namespace CandidateSearch.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Picks up every IEntityTypeConfiguration<T> class in this project.
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CandidateSearchDbContext).Assembly);
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +12,6 @@ namespace CandidateSearch.Models.DTOs.Auth
         [Required, EmailAddress, MaxLength(256)]
         public string Email { get; set; } = string.Empty;
 
-        // BCrypt only uses the first 72 bytes, so the length is capped.
         [Required, MinLength(8), MaxLength(72)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$",
             ErrorMessage = "Password must contain an uppercase letter, a lowercase letter, a digit and a special character.")]

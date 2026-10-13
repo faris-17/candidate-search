@@ -15,7 +15,6 @@ namespace CandidateSearch.Services.Implementations
 {
     public class AuthService(CandidateSearchDbContext db, ITokenService tokenService) : IAuthService
     {
-        // Verified when the email doesn't exist, so both failure paths take the same time.
         private static readonly string DummyHash = BCrypt.Net.BCrypt.HashPassword("not-a-real-password");
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken ct)
@@ -39,7 +38,6 @@ namespace CandidateSearch.Services.Implementations
             }
             catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
             {
-                // Two simultaneous registrations passed the check above; the unique index stopped the second.
                 throw new EmailAlreadyExistsException();
             }
 
@@ -55,13 +53,11 @@ namespace CandidateSearch.Services.Implementations
             {
                 var passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, candidate?.PasswordHash ?? DummyHash);
 
-                // Same exception (same message) for "no such email" and "wrong password".
                 if (candidate is null || !passwordValid)
                     throw new InvalidCredentialsException();
             }
             catch (Exception ex) when (ex is not InvalidCredentialsException)
             {
-                // Protect against malformed hashes, salt parsing errors, or bcrypt exceptions
                 throw new InvalidCredentialsException();
             }
 

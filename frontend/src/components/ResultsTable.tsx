@@ -2,7 +2,7 @@ import type { Candidate } from '../types';
 import { formatDate } from '../utils/format';
 
 export default function ResultsTable({ items }: { items: Candidate[] }) {
-    const getInitials = (name?: string) => {
+    const getInitials = (name?: string | null) => {
         if (!name) return '??';
         const parts = name.trim().split(' ');
         if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
@@ -11,7 +11,6 @@ export default function ResultsTable({ items }: { items: Candidate[] }) {
 
     return (
         <div className="table-responsive-container">
-            {/* Desktop Table View (>= 769px) */}
             <div className="desktop-table-wrap">
                 <table className="results-table">
                     <thead>
@@ -71,7 +70,6 @@ export default function ResultsTable({ items }: { items: Candidate[] }) {
                 </table>
             </div>
 
-            {/* Mobile Card View (< 769px) */}
             <div className="mobile-candidate-cards" aria-label="Candidate list">
                 {items.map((c) => (
                     <article key={c.id} className="candidate-mobile-card">

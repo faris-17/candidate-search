@@ -16,12 +16,11 @@ export async function searchCandidates(p: SearchParams, signal?: AbortSignal): P
         sortOrder: p.sortOrder,
     };
 
-    // Only send filters that have a value ("applied only when supplied").
     if (p.minAge) params.minAge = p.minAge;
     if (p.maxAge) params.maxAge = p.maxAge;
     if (p.gender) params.gender = p.gender;
     if (p.location.trim()) params.location = p.location.trim();
-    if (p.education.length > 0) params.education = p.education.join(',');   // "B.Tech,M.Tech,MBA"
+    if (p.education.length > 0) params.education = p.education.join(',');
     if (p.createdFrom) params.createdFrom = p.createdFrom;
     if (p.createdTo) params.createdTo = p.createdTo;
     if (p.lastLoginFrom) params.lastLoginFrom = p.lastLoginFrom;

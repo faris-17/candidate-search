@@ -1,4 +1,4 @@
-﻿using CandidateSearch.API.Extensions;
+using CandidateSearch.API.Extensions;
 using CandidateSearch.Models.DTOs.Candidates;
 using CandidateSearch.Models.DTOs.Common;
 using CandidateSearch.Services.Interfaces;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CandidateSearch.API.Controllers
 {
     [ApiController]
-    [Authorize]                                  // every action requires a valid JWT
+    [Authorize]
     [Route("api/candidates")]
     public class CandidatesController(ICandidateSearchService searchService) : ControllerBase
     {

@@ -36,7 +36,7 @@ namespace CandidateSearch.Services.Implementations
                 audience: _settings.Audience,
                 claims: claims,
                 notBefore: now,
-                expires: now.AddSeconds(_settings.ExpiresInSeconds),    // same value is returned as expiresIn
+                expires: now.AddSeconds(_settings.ExpiresInSeconds),
                 signingCredentials: credentials);
 
             return new TokenResult(new JwtSecurityTokenHandler().WriteToken(token), _settings.ExpiresInSeconds);

@@ -1,17 +1,15 @@
-﻿using CandidateSearch.Models.Exceptions;
+using CandidateSearch.Models.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CandidateSearch.API.Handlers
 {
-    /// <summary>Converts exceptions into consistent ProblemDetails JSON responses, in one place.</summary>
     public class GlobalExceptionHandler(
         ILogger<GlobalExceptionHandler> logger,
         IProblemDetailsService problemDetailsService) : IExceptionHandler
     {
         public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken ct)
         {
-            // The browser cancelled the request: nothing to report.
             if (exception is OperationCanceledException && context.RequestAborted.IsCancellationRequested)
                 return true;
 
