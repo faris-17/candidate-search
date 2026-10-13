@@ -68,7 +68,7 @@ Ensure a PostgreSQL database named `candidate_search` exists.
 
 2. Configure your database connection string and JWT signing key using .NET User Secrets:
    ```bash
-   dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Database=candidate_search;Username=postgres;Password=Password@123" --project CandidateSearch.API/CandidateSearch.API.csproj
+   dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Database=candidate_search;Username=postgres;Password=12345678" --project CandidateSearch.API/CandidateSearch.API.csproj
    dotnet user-secrets set "Jwt:Key" "CandidateSearch-Dev-Secret-Key-32chars!!" --project CandidateSearch.API/CandidateSearch.API.csproj
    ```
    *(Replace password with your local PostgreSQL password if not using Docker)*.
