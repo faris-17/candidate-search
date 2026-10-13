@@ -1,4 +1,4 @@
-import type { SearchFilters } from './types';
+import type { SearchFilters } from '../types';
 
 export const PAGE_SIZE = 20;
 export const EDUCATION_OPTIONS = ['B.Tech', 'M.Tech', 'MBA', 'MCA', 'PhD'];

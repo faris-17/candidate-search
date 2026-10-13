@@ -6,7 +6,7 @@ import { tokenStorage } from '../auth/tokenStorage';
 import FilterForm from '../components/FilterForm';
 import Pagination from '../components/Pagination';
 import ResultsTable from '../components/ResultsTable';
-import { EMPTY_FILTERS, PAGE_SIZE } from '../constants';
+import { EMPTY_FILTERS, PAGE_SIZE } from '../constants/constants';
 import type { Candidate, PagedResult, SearchFilters, SortBy, SortOrder } from '../types';
 import { getErrorMessage } from '../utils/errors';
 

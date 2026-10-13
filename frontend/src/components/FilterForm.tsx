@@ -1,4 +1,4 @@
-import { EDUCATION_OPTIONS, GENDER_OPTIONS } from '../constants';
+import { EDUCATION_OPTIONS, GENDER_OPTIONS } from '../constants/constants';
 import type { SearchFilters } from '../types';
 
 interface Props {
