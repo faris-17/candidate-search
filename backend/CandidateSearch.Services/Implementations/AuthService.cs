@@ -51,11 +51,19 @@ namespace CandidateSearch.Services.Implementations
             var email = NormalizeEmail(request.Email);
             var candidate = await db.Candidates.FirstOrDefaultAsync(c => c.Email == email, ct);
 
-            var passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, candidate?.PasswordHash ?? DummyHash);
+            try
+            {
+                var passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, candidate?.PasswordHash ?? DummyHash);
 
-            // Same exception (same message) for "no such email" and "wrong password".
-            if (candidate is null || !passwordValid)
+                // Same exception (same message) for "no such email" and "wrong password".
+                if (candidate is null || !passwordValid)
+                    throw new InvalidCredentialsException();
+            }
+            catch (Exception ex) when (ex is not InvalidCredentialsException)
+            {
+                // Protect against malformed hashes, salt parsing errors, or bcrypt exceptions
                 throw new InvalidCredentialsException();
+            }
 
             candidate.LastLoginAt = DateTime.UtcNow;
             await db.SaveChangesAsync(ct);
