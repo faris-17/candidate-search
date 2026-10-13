@@ -1,6 +1,7 @@
 using CandidateSearch.API.Extensions;
 using CandidateSearch.API.Handlers;
 using CandidateSearch.Services.Extensions;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ app.UseExceptionHandler();                       // must be first, so it catches
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
     await app.InitialiseDatabaseAsync();
 }
 

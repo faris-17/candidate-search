@@ -3,6 +3,11 @@ export interface LoginResponse {
     expiresIn: number;
 }
 
+export interface RegisterResponse {
+    id: number;
+    email: string;
+}
+
 export interface Candidate {
     id: number;
     name: string | null;
