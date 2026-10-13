@@ -1,7 +1,8 @@
-﻿using CandidateSearch.Models.Constants;
+using CandidateSearch.Models.Constants;
 using CandidateSearch.Models.DTOs.Candidates;
 using CandidateSearch.Models.Entities;
 using CandidateSearch.Services.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

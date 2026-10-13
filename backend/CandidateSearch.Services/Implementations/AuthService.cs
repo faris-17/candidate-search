@@ -1,8 +1,10 @@
-﻿using CandidateSearch.Data;
+using CandidateSearch.Data;
 using CandidateSearch.Models.DTOs.Auth;
 using CandidateSearch.Models.Entities;
 using CandidateSearch.Models.Exceptions;
 using CandidateSearch.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;

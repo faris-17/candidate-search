@@ -1,8 +1,10 @@
-﻿using CandidateSearch.Data;
+using CandidateSearch.Data;
 using CandidateSearch.Models.DTOs.Candidates;
 using CandidateSearch.Models.DTOs.Common;
+using CandidateSearch.Services.Extensions;
 using CandidateSearch.Services.Helpers;
 using CandidateSearch.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
