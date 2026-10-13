@@ -15,16 +15,16 @@ This solution features:
 
 1. **Database-Level Querying:**
    All filtering (age range, gender, location, multi-select education, created date, last login date), sorting, and pagination are performed at the **PostgreSQL query level** using EF Core `IQueryable`. No in-memory filtering or materialization of full tables occurs in C#.
-2. **Education Multi-Select (Task 5):**
+2. **Education Multi-Select:**
    The comma-separated education query string (e.g. `education=BTech,MBA,MCA`) is parsed, normalized, and translated to a single PostgreSQL `WHERE education = ANY(@list)` / `IN (...)` clause.
-3. **Caller Exclusion (Task 3):**
+3. **Caller Exclusion:**
    The authenticated user's ID is read from the JWT `sub` claim and excluded directly in SQL (`WHERE id <> @currentCandidateId`).
-4. **Secure Authentication (Tasks 1 & 2):**
+4. **Secure Authentication:**
    * Passwords hashed using `BCrypt.Net-Next`.
    * Fast timing attack mitigation: invalid login requests take constant time.
    * Duplicate email registrations return `409 Conflict`.
    * All `/api/candidates/*` endpoints are protected by `[Authorize]`.
-5. **Interactive UI (Tasks 11 & 12):**
+5. **Interactive UI:**
    * Filter controls for Age (min/max), Gender dropdown, Location text search, Education multi-select checkboxes, Created Date range, and Last Login Date range.
    * Sorting controls (`createdAt`, `lastLoginAt`, `age`) with ascending/descending toggles.
    * Resilient states: Loading spinner, error messages with retry, empty state ("No candidates match your filters"), and paginated navigation.
@@ -213,7 +213,7 @@ You can also use the **Register** tab on the login page to create a new user.
 3. **Multi-Select Education Parsing:**
    The `education` query parameter supports both formal abbreviations (`B.Tech`, `M.Tech`) and user-entered variants (`BTech`, `mtech`). These are parsed and normalized in `EducationParser`, producing a SQL `c.education = ANY(@list)` predicate.
 
-4. **Self-Exclusion (Task 3):**
+4. **Self-Exclusion:**
    The logged-in candidate ID is extracted from the `sub` claim of the verified JWT and appended as `c.Id != currentCandidateId` directly to the SQL query.
 
 ---
