@@ -13,8 +13,8 @@ import { getErrorMessage } from '../utils/errors';
 export default function SearchPage() {
     const navigate = useNavigate();
 
-    const [draft, setDraft] = useState<SearchFilters>(EMPTY_FILTERS);     // what the user is typing
-    const [applied, setApplied] = useState<SearchFilters>(EMPTY_FILTERS); // what was actually searched
+    const [draft, setDraft] = useState<SearchFilters>(EMPTY_FILTERS);
+    const [applied, setApplied] = useState<SearchFilters>(EMPTY_FILTERS);
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState<SortBy>('createdAt');
     const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
@@ -23,7 +23,6 @@ export default function SearchPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // One effect = one place that fetches. It re-runs whenever any search input changes.
     useEffect(() => {
         const controller = new AbortController();
         setLoading(true);
@@ -38,12 +37,12 @@ export default function SearchPage() {
                 if (!controller.signal.aborted) setLoading(false);
             });
 
-        return () => controller.abort();   // cleanup: cancel the previous request
+        return () => controller.abort();
     }, [applied, page, sortBy, sortOrder]);
 
     const handleSearch = () => {
         setApplied(draft);
-        setPage(1);                        // a new search always starts at page 1
+        setPage(1);
     };
 
     const handleReset = () => {
@@ -62,50 +61,144 @@ export default function SearchPage() {
     const totalPages = data ? Math.ceil(data.totalCount / data.pageSize) : 0;
 
     return (
-        <main className="search-page">
-            <header className="topbar">
-                <h1>Candidate Search</h1>
-                <button className="secondary" onClick={handleLogout}>Logout</button>
+        <div className="app-shell">
+            <header className="navbar">
+                <div className="navbar-container">
+                    <div className="brand">
+                        <div className="brand-logo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <circle cx="11" cy="11" r="3" />
+                            </svg>
+                        </div>
+                        <div className="brand-text">
+                            <span className="brand-title">CandidateSearch</span>
+                            <span className="brand-badge">Talent Intelligence Portal</span>
+                        </div>
+                    </div>
+                    <div className="navbar-actions">
+                        <div className="user-indicator">
+                            <span className="status-dot"></span>
+                            <span>Connected</span>
+                        </div>
+                        <button className="btn btn-outline" onClick={handleLogout}>
+                            <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
             </header>
 
-            <FilterForm value={draft} onChange={setDraft} onSearch={handleSearch}
-                onReset={handleReset} disabled={loading} />
-
-            <section className="results card">
-                <div className="sort-bar">
-                    <label>
-                        Sort by{' '}
-                        <select value={sortBy} onChange={(e) => { setSortBy(e.target.value as SortBy); setPage(1); }}>
-                            <option value="createdAt">Created date</option>
-                            <option value="lastLoginAt">Last login</option>
-                            <option value="age">Age</option>
-                        </select>
-                    </label>
-                    <label>
-                        <select value={sortOrder} onChange={(e) => { setSortOrder(e.target.value as SortOrder); setPage(1); }}
-                            aria-label="Sort order">
-                            <option value="desc">Descending</option>
-                            <option value="asc">Ascending</option>
-                        </select>
-                    </label>
+            <main className="main-content">
+                <div className="page-header">
+                    <div>
+                        <h1 className="page-title">Candidate Directory</h1>
+                        <p className="page-desc">Search, filter, and review prospective candidate profiles in real-time</p>
+                    </div>
                 </div>
 
-                {loading && <p className="status" role="status">Loading candidates...</p>}
+                <FilterForm
+                    value={draft}
+                    onChange={setDraft}
+                    onSearch={handleSearch}
+                    onReset={handleReset}
+                    disabled={loading}
+                />
 
-                {error && <p className="error" role="alert">{error}</p>}
+                <section className="card results-card">
+                    <div className="results-toolbar">
+                        <div className="results-summary">
+                            <h2>Directory Results</h2>
+                            {data && (
+                                <span className="results-count-badge">
+                                    {data.totalCount} candidate{data.totalCount === 1 ? '' : 's'}
+                                </span>
+                            )}
+                        </div>
 
-                {!loading && !error && data && data.items.length === 0 && (
-                    <p className="status">No candidates match your filters.</p>
-                )}
+                        <div className="sort-controls">
+                            <label className="sort-label" htmlFor="sort-field">Sort By</label>
+                            <select
+                                id="sort-field"
+                                className="sort-select"
+                                value={sortBy}
+                                onChange={(e) => { setSortBy(e.target.value as SortBy); setPage(1); }}
+                            >
+                                <option value="createdAt">Registration Date</option>
+                                <option value="lastLoginAt">Last Login Date</option>
+                                <option value="age">Age</option>
+                            </select>
 
-                {!error && data && data.items.length > 0 && (
-                    <div className={loading ? 'dimmed' : undefined}>
-                        <ResultsTable items={data.items} />
-                        <Pagination page={data.page} totalPages={totalPages} totalCount={data.totalCount}
-                            onChange={setPage} disabled={loading} />
+                            <select
+                                id="sort-order"
+                                className="sort-select"
+                                value={sortOrder}
+                                onChange={(e) => { setSortOrder(e.target.value as SortOrder); setPage(1); }}
+                                aria-label="Sort direction"
+                            >
+                                <option value="desc">Descending (Newest / High)</option>
+                                <option value="asc">Ascending (Oldest / Low)</option>
+                            </select>
+                        </div>
                     </div>
-                )}
-            </section>
-        </main>
+
+                    {loading && (
+                        <div className="state-container loading-state">
+                            <div className="spinner"></div>
+                            <p>Querying candidates from database...</p>
+                        </div>
+                    )}
+
+                    {error && (
+                        <div className="state-container error-state" role="alert">
+                            <svg className="state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                            <div>
+                                <h3>Failed to load candidate results</h3>
+                                <p>{error}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {!loading && !error && data && data.items.length === 0 && (
+                        <div className="state-container empty-state">
+                            <div className="empty-icon-wrap">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                            <h3>No Candidates Match Your Filters</h3>
+                            <p>Try clearing some criteria or widening your age, location, and date range.</p>
+                            <button className="btn btn-secondary" onClick={handleReset}>
+                                Clear All Filters
+                            </button>
+                        </div>
+                    )}
+
+                    {!error && data && data.items.length > 0 && (
+                        <div className={`table-container ${loading ? 'dimmed' : ''}`}>
+                            <ResultsTable items={data.items} />
+                            <Pagination
+                                page={data.page}
+                                totalPages={totalPages}
+                                totalCount={data.totalCount}
+                                onChange={setPage}
+                                disabled={loading}
+                            />
+                        </div>
+                    )}
+                </section>
+            </main>
+        </div>
     );
 }

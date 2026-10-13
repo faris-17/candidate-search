@@ -11,13 +11,11 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        setSuccessMessage(null);
         try {
             if (isRegister) {
                 await register(email, password);
@@ -38,65 +36,126 @@ export default function LoginPage() {
     }
 
     return (
-        <main className="login-page">
-            <form className="card" onSubmit={handleSubmit}>
-                <h1>Candidate Search</h1>
-                <p className="subtitle">{isRegister ? 'Create an account to search candidates' : 'Sign in to access candidate search'}</p>
+        <div className="auth-page">
+            <div className="auth-card card">
+                <div className="auth-brand">
+                    <div className="auth-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            <circle cx="11" cy="11" r="3" />
+                        </svg>
+                    </div>
+                    <h1>Candidate Search</h1>
+                    <p className="auth-desc">
+                        {isRegister
+                            ? 'Create an account to query and manage candidate profiles'
+                            : 'Sign in to access candidate directory, search, and analytics'}
+                    </p>
+                </div>
 
-                <div className="tab-group" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                <div className="segmented-tabs" role="tablist">
                     <button
                         type="button"
-                        className={!isRegister ? '' : 'secondary'}
+                        role="tab"
+                        aria-selected={!isRegister}
+                        className={`tab-btn ${!isRegister ? 'tab-active' : ''}`}
                         onClick={() => { setIsRegister(false); setError(null); }}
-                        style={{ flex: 1 }}
                     >
-                        Login
+                        Sign In
                     </button>
                     <button
                         type="button"
-                        className={isRegister ? '' : 'secondary'}
+                        role="tab"
+                        aria-selected={isRegister}
+                        className={`tab-btn ${isRegister ? 'tab-active' : ''}`}
                         onClick={() => { setIsRegister(true); setError(null); }}
-                        style={{ flex: 1 }}
                     >
                         Register
                     </button>
                 </div>
 
-                <label>
-                    Email
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        autoComplete="email"
-                    />
-                </label>
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <div className="field-group">
+                        <label className="field-label" htmlFor="auth-email">
+                            Email Address
+                        </label>
+                        <div className="input-with-icon">
+                            <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <input
+                                id="auth-email"
+                                type="email"
+                                placeholder="name@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                autoComplete="email"
+                            />
+                        </div>
+                    </div>
 
-                <label>
-                    Password
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        autoComplete={isRegister ? 'new-password' : 'current-password'}
-                    />
-                </label>
+                    <div className="field-group">
+                        <label className="field-label" htmlFor="auth-password">
+                            Password
+                        </label>
+                        <div className="input-with-icon">
+                            <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input
+                                id="auth-password"
+                                type="password"
+                                placeholder="••••••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                autoComplete={isRegister ? 'new-password' : 'current-password'}
+                            />
+                        </div>
+                    </div>
 
-                {isRegister && (
-                    <small style={{ color: 'var(--text-muted, #888)', fontSize: '0.8rem', marginTop: '-0.5rem', marginBottom: '0.5rem', display: 'block' }}>
-                        Must be at least 8 chars with an uppercase, lowercase, number, and special character.
-                    </small>
-                )}
+                    {isRegister && (
+                        <div className="password-hint">
+                            <svg className="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                            <span>Must be 8+ characters with uppercase, lowercase, number, and special character.</span>
+                        </div>
+                    )}
 
-                {error && <p role="alert" className="error">{error}</p>}
-                {successMessage && <p role="status" className="status" style={{ color: '#22c55e' }}>{successMessage}</p>}
+                    {error && (
+                        <div className="form-error" role="alert">
+                            <svg className="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="15" y1="9" x2="9" y2="15" />
+                                <line x1="9" y1="9" x2="15" y2="15" />
+                            </svg>
+                            <span>{error}</span>
+                        </div>
+                    )}
 
-                <button type="submit" disabled={loading}>
-                    {loading ? (isRegister ? 'Creating account...' : 'Signing in...') : (isRegister ? 'Register & Sign In' : 'Login')}
-                </button>
-            </form>
-        </main>
+                    <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                        {loading ? (
+                            <>
+                                <span className="btn-spinner"></span>
+                                {isRegister ? 'Creating Account...' : 'Signing In...'}
+                            </>
+                        ) : (
+                            isRegister ? 'Create Account & Continue' : 'Sign In'
+                        )}
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    <span>Demo Account: <code>user1@example.com</code> / <code>Password@123</code></span>
+                </div>
+            </div>
+        </div>
     );
 }
