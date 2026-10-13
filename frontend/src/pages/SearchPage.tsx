@@ -3,12 +3,79 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { searchCandidates } from '../api/candidates';
 import { tokenStorage } from '../auth/tokenStorage';
+import CustomSelect, { type SelectOption } from '../components/CustomSelect';
 import FilterForm from '../components/FilterForm';
 import Pagination from '../components/Pagination';
 import ResultsTable from '../components/ResultsTable';
 import { EMPTY_FILTERS, PAGE_SIZE } from '../constants/constants';
 import type { Candidate, PagedResult, SearchFilters, SortBy, SortOrder } from '../types';
 import { getErrorMessage } from '../utils/errors';
+
+const sortByOptions: SelectOption[] = [
+    {
+        value: 'createdAt',
+        label: 'Registration Date',
+        description: 'Order by candidate profile creation time',
+        icon: (
+            <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+        ),
+        badge: <span className="sort-badge">Default</span>,
+    },
+    {
+        value: 'lastLoginAt',
+        label: 'Last Login Date',
+        description: 'Order by candidate activity and sign-in time',
+        icon: (
+            <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
+        ),
+        badge: <span className="sort-badge">Activity</span>,
+    },
+    {
+        value: 'age',
+        label: 'Candidate Age',
+        description: 'Order candidates chronologically by age in years',
+        icon: (
+            <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+            </svg>
+        ),
+        badge: <span className="sort-badge">Demographics</span>,
+    },
+];
+
+const sortOrderOptions: SelectOption[] = [
+    {
+        value: 'desc',
+        label: 'Descending (Newest / High First)',
+        description: 'Highest values or most recent timestamps first',
+        icon: (
+            <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <polyline points="19 12 12 19 5 12" />
+            </svg>
+        ),
+    },
+    {
+        value: 'asc',
+        label: 'Ascending (Oldest / Low First)',
+        description: 'Lowest values or earliest timestamps first',
+        icon: (
+            <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+            </svg>
+        ),
+    },
+];
 
 export default function SearchPage() {
     const navigate = useNavigate();
@@ -122,28 +189,24 @@ export default function SearchPage() {
                         </div>
 
                         <div className="sort-controls">
-                            <label className="sort-label" htmlFor="sort-field">Sort By</label>
-                            <select
-                                id="sort-field"
-                                className="sort-select"
+                            <span className="sort-label">Sort By:</span>
+                            <CustomSelect
+                                className="sort-custom-select"
                                 value={sortBy}
-                                onChange={(e) => { setSortBy(e.target.value as SortBy); setPage(1); }}
-                            >
-                                <option value="createdAt">Registration Date</option>
-                                <option value="lastLoginAt">Last Login Date</option>
-                                <option value="age">Age</option>
-                            </select>
+                                onChange={(val) => { setSortBy(val as SortBy); setPage(1); }}
+                                options={sortByOptions}
+                                disabled={loading}
+                                ariaLabel="Sort candidate results by field"
+                            />
 
-                            <select
-                                id="sort-order"
-                                className="sort-select"
+                            <CustomSelect
+                                className="sort-custom-select order-select"
                                 value={sortOrder}
-                                onChange={(e) => { setSortOrder(e.target.value as SortOrder); setPage(1); }}
-                                aria-label="Sort direction"
-                            >
-                                <option value="desc">Descending (Newest / High)</option>
-                                <option value="asc">Ascending (Oldest / Low)</option>
-                            </select>
+                                onChange={(val) => { setSortOrder(val as SortOrder); setPage(1); }}
+                                options={sortOrderOptions}
+                                disabled={loading}
+                                ariaLabel="Sort candidate results order"
+                            />
                         </div>
                     </div>
 

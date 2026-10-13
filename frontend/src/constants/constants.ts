@@ -3,6 +3,17 @@ import type { SearchFilters } from '../types';
 export const PAGE_SIZE = 20;
 export const EDUCATION_OPTIONS = ['B.Tech', 'M.Tech', 'MBA', 'MCA', 'PhD'];
 export const GENDER_OPTIONS = ['Male', 'Female', 'Other'];
+export const LOCATION_OPTIONS = [
+    'Kochi',
+    'Bengaluru',
+    'Chennai',
+    'Hyderabad',
+    'Trivandrum',
+    'Kozhikode',
+    'Mumbai',
+    'Delhi',
+    'Pune',
+];
 
 export const EMPTY_FILTERS: SearchFilters = {
     minAge: '',
