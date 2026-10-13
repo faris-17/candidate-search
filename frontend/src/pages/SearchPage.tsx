@@ -15,7 +15,6 @@ const sortByOptions: SelectOption[] = [
     {
         value: 'createdAt',
         label: 'Registration Date',
-        description: 'Order by candidate profile creation time',
         icon: (
             <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -24,31 +23,26 @@ const sortByOptions: SelectOption[] = [
                 <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
         ),
-        badge: <span className="sort-badge">Default</span>,
     },
     {
         value: 'lastLoginAt',
         label: 'Last Login Date',
-        description: 'Order by candidate activity and sign-in time',
         icon: (
             <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
             </svg>
         ),
-        badge: <span className="sort-badge">Activity</span>,
     },
     {
         value: 'age',
         label: 'Candidate Age',
-        description: 'Order candidates chronologically by age in years',
         icon: (
             <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
             </svg>
         ),
-        badge: <span className="sort-badge">Demographics</span>,
     },
 ];
 
@@ -56,7 +50,6 @@ const sortOrderOptions: SelectOption[] = [
     {
         value: 'desc',
         label: 'Descending (Newest / High First)',
-        description: 'Highest values or most recent timestamps first',
         icon: (
             <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -67,7 +60,6 @@ const sortOrderOptions: SelectOption[] = [
     {
         value: 'asc',
         label: 'Ascending (Oldest / Low First)',
-        description: 'Lowest values or earliest timestamps first',
         icon: (
             <svg className="opt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="19" x2="12" y2="5" />
