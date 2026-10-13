@@ -1,7 +1,6 @@
 using CandidateSearch.API.Extensions;
 using CandidateSearch.API.Handlers;
 using CandidateSearch.Services.Extensions;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +24,12 @@ app.UseExceptionHandler();                       // must be first, so it catches
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
-    app.MapGet("/swagger", () => Results.Redirect("/scalar/v1"));
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/openapi/v1.json", "Candidate Search API v1");
+        c.RoutePrefix = "swagger";
+    });
+    app.MapGet("/", () => Results.Redirect("/swagger"));
     await app.InitialiseDatabaseAsync();
 }
 

@@ -84,7 +84,7 @@ Ensure a PostgreSQL database named `candidate_search` exists.
    ```
    * **HTTPS:** `https://localhost:7169`
    * **HTTP:** `http://localhost:5177`
-   * **Interactive API Documentation:** `https://localhost:7169/scalar/v1`
+   * **Interactive Swagger UI:** `https://localhost:7169/swagger`
 
 > **Note on Seed Data:** On initial startup in Development mode, the application automatically runs `InitialiseDatabaseAsync()` to seed **150 realistic candidates** with hashed passwords into the database.
 
